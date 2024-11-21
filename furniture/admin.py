@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Furniture, Category, Review
+from .models import CommercialBuilding, Furniture, Category, GardenAndOutbuildings, HouseAndResidentialBuilding, Review
 
 
 @admin.register(Category)
@@ -7,6 +7,20 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'description') 
     search_fields = ('name',) 
 
+@admin.register(GardenAndOutbuildings)
+class GardenAndOutbuildingsAdmin(admin.ModelAdmin):
+    list_display = ('name',)    
+    search_fields = ('name',)               
+
+@admin.register(CommercialBuilding)
+class CommercialBuildingAdmin(admin.ModelAdmin):
+    list_display = ('name',)     
+    search_fields = ('name',)               
+
+@admin.register(HouseAndResidentialBuilding)
+class HouseAndResidentialBuildingAdmin(admin.ModelAdmin):
+    list_display = ('name',)     
+    search_fields = ('name',)   
 
 class ReviewInline(admin.TabularInline):
     model = Review

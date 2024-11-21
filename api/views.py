@@ -13,8 +13,8 @@ from api.filters import FurnitureFilter
 from api.mixins import UltraGenericAPIView
 from .paginations import SimplePagintion
 from .permissions import IsOwnerOrReadOnly
-from furniture.models import Category, Furniture, Review
-from .serializers import CategorySerializer, DetailFurnitureSerializer, FurnitureSerializer, ListFurnitureSerializer, ReviewSerializer
+from furniture.models import Category, CommercialBuilding, Furniture, GardenAndOutbuildings, HouseAndResidentialBuilding, Review
+from .serializers import CategorySerializer, CommercialBuildingSerializer, DetailFurnitureSerializer, FurnitureSerializer, GardenAndOutbuildingsSerializer, HouseAndResidentialBuildingSerializer, ListFurnitureSerializer, ReviewSerializer
 from .clone import clone_furniture
 from api.auth.permissions import IsSuperUser
 
@@ -131,3 +131,43 @@ class ReviewListView(ListCreateAPIView):
     def get_queryset(self):
         furniture = get_object_or_404(Furniture, pk=self.kwargs['furniture_pk'])
         return Review.objects.filter(furniture=furniture)
+class GardenAndOutbuildingsListView(ListCreateAPIView):
+    queryset = GardenAndOutbuildings.objects.all()
+    serializer_class = GardenAndOutbuildingsSerializer
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+
+class GardenAndOutbuildingsDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = GardenAndOutbuildings.objects.all()
+    serializer_class = GardenAndOutbuildingsSerializer
+
+class CategoryDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+class CommercialBuildingListView(ListCreateAPIView):
+    queryset = CommercialBuilding.objects.all()
+    serializer_class = CommercialBuildingSerializer
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+
+class CommercialBuildingDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = CommercialBuilding.objects.all()
+    serializer_class = CommercialBuildingSerializer
+
+
+class HouseAndResidentialBuildingListView(ListCreateAPIView):
+    queryset = HouseAndResidentialBuilding.objects.all()
+    serializer_class = HouseAndResidentialBuildingSerializer
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+
+class HouseAndResidentialBuildingDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = HouseAndResidentialBuilding.objects.all()
+    serializer_class = HouseAndResidentialBuildingSerializer

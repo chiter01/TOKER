@@ -12,12 +12,46 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+class GardenAndOutbuildings(models.Model):
+    name = models.CharField(max_length=255, verbose_name="Название садового и хозпостроения")
+
+    class Meta:
+        verbose_name = "Садовое и хозпостроение"
+        verbose_name_plural = "Садовые и хозпостройки"
+
+    def __str__(self):
+        return self.name
+
+
+class CommercialBuilding(models.Model):
+    name = models.CharField(max_length=255, verbose_name="Название коммерческого строения")
+
+    class Meta:
+        verbose_name = "Коммерческое строение"
+        verbose_name_plural = "Коммерческие строения"
+
+    def __str__(self):
+        return self.name
+
+
+class HouseAndResidentialBuilding(models.Model):
+    name = models.CharField(max_length=255, verbose_name="Название жилого строения")
+
+    class Meta:
+        verbose_name = "Дом и жилое строение"
+        verbose_name_plural = "Дома и жилые строения"
+
+    def __str__(self):
+        return self.name
 
 class Furniture(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название товара")
     description = models.TextField(verbose_name="Описание товара")
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="furniture", verbose_name="Категория")
+    garden = models.ForeignKey(GardenAndOutbuildings, on_delete=models.CASCADE, related_name="furniture", verbose_name="Садовое и хозпостроение")
+    commercial = models.ForeignKey(CommercialBuilding, on_delete=models.CASCADE, related_name="furniture", verbose_name="Коммерческое строение")
+    house = models.ForeignKey(HouseAndResidentialBuilding, on_delete=models.CASCADE, related_name="furniture", verbose_name="Дом и жилое строение")
     image = models.ImageField(upload_to="furniture_images/", verbose_name="Изображение товара")
     available = models.BooleanField(default=True, verbose_name="Доступен для продажи")
     popularity = models.PositiveIntegerField(default=0, verbose_name="Популярность") 

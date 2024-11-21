@@ -1,6 +1,6 @@
+from django import forms
 from django_filters import rest_framework as filters
 from furniture.models import Category, Furniture
-from django.db import models
 
 class FurnitureFilter(filters.FilterSet):
     price_from = filters.NumberFilter(
@@ -22,15 +22,41 @@ class FurnitureFilter(filters.FilterSet):
         method='filter_in_stock', 
         label='Только в наличии'
     )
+    area_from = filters.NumberFilter(
+        lookup_expr='gte',
+        field_name='area',
+        label='Площадь от'
+    )
+    area_to = filters.NumberFilter(
+        lookup_expr='lte',
+        field_name='area',
+        label='Площадь до'
+    )
+
+    sort_by = filters.OrderingFilter(
+        fields=(
+            ('name', 'Название'),
+            ('popularity', 'Популярность'),
+            ('area', 'Площадь (м²)'),
+            ('price', 'Цена (грн)'),
+        ),
+        label='Сортировка',
+    )
+
+    building_type = filters.ChoiceFilter(
+        choices=(
+            ('commercial', 'Коммерческие строения'),
+            ('residential', 'Дома и жилые строения'),
+            ('garden', 'Садовые и хозпостройки'),
+        ),
+        field_name='building_type',
+        label='Тип строения',
+        widget=forms.Select, 
+    )
 
     class Meta:
         model = Furniture
         fields = [] 
-        filter_overrides = {
-            models.ImageField: {  
-                'filter_class': filters.CharFilter,  
-            },
-        }
 
     def filter_in_stock(self, queryset, name, value):
         if value:
