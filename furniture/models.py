@@ -28,6 +28,28 @@ class Furniture(models.Model):
         verbose_name="Средний рейтинг",
         validators=[MinValueValidator(0), MaxValueValidator(5)]
     )  
+    area = models.DecimalField(
+        max_digits=7,
+        decimal_places=2,
+        verbose_name="Площадь (м²)",
+        validators=[MinValueValidator(0)]
+    )
+    square = models.DecimalField(
+        max_digits=7,
+        decimal_places=2,
+        verbose_name="Квадратура (м²)",
+        validators=[MinValueValidator(0)]
+    )
+    floor = models.PositiveIntegerField(
+        default=1,
+        verbose_name="Этаж",
+        validators=[MinValueValidator(1)]
+    )
+    term = models.PositiveIntegerField(
+        verbose_name="Срок (месяцы)",
+        validators=[MinValueValidator(1)],
+        help_text="Укажите срок в месяцах"
+    )
 
     class Meta:
         verbose_name = "Товар"
@@ -44,7 +66,7 @@ class Furniture(models.Model):
         total_rating = sum(review.stars for review in reviews)
         self.rating = total_rating / reviews.count() if reviews.exists() else 0
         self.save()
-
+        
 class Image(models.Model):
     furniture = models.ForeignKey(Furniture, on_delete=models.CASCADE, related_name="images", verbose_name="Товар")
     image = models.ImageField(upload_to="furniture_images/", verbose_name="Дополнительное изображение")  
